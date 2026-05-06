@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Bolsa de Trabajo</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Bienvenido a la bolsa de trabajo</h1>
-    <p>Ya estás usando templates 🎉</p>
+<body class="bg-gray-100">
+
+    <nav class="bg-blue-700 text-white p-4 flex justify-between">
+        <h1 class="text-2xl font-bold">Bolsa de Trabajo</h1>
+
+        <div class="space-x-4">
+            <a href="/empleos/">Empleos</a>
+            <a href="/empresas/">Empresas</a>
+            <a href="/login/">Login</a>
+        </div>
+    </nav>
+
+    <section class="text-center py-20">
+        <h2 class="text-5xl font-bold text-gray-800">
+            Encuentra el trabajo ideal
+        </h2>
+
+        <p class="mt-4 text-gray-600">
+            Miles de oportunidades laborales
+        </p>
+
+        <a href="/empleos/"
+           class="bg-blue-600 text-white px-6 py-3 rounded-lg mt-6 inline-block">
+            Ver Empleos
+        </a>
+    </section>
+
 </body>
 </html>

@@ -77,11 +77,14 @@ WSGI_APPLICATION = 'bolsa_trabajo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bolsa_trabajo',
-        'USER': 'root',
-        'PASSWORD': 'tu_password',
-        'HOST': 'localhost',
+        'NAME': 'bolsa_trabajo', # Asegúrate de que esta BD ya esté creada en MySQL
+        'USER': 'root',             # Tu usuario de MySQL
+        'PASSWORD': '1234',  # Tu contraseña de MySQL
+        'HOST': 'localhost',        # Usa la IP en lugar de localhost para evitar conflictos
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
