@@ -1,4 +1,4 @@
-<!-- empleos/templates_empleos/publicar_empleo.html -->
+<<!-- empleos/templates_empleos/publicar_empleo.html -->
 
 <!DOCTYPE html>
 <html lang="es">
@@ -6,124 +6,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publicar Empleo</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen">
 
     <nav class="bg-blue-700 text-white p-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold">
-            Bolsa de Trabajo
-        </h1>
-
+        <h1 class="text-2xl font-bold">Bolsa de Trabajo</h1>
         <div class="space-x-4">
-            <a href="/" class="hover:underline">Inicio</a>
-            <a href="/empleos/" class="hover:underline">Empleos</a>
-            <a href="/dashboard/" class="hover:underline">Dashboard</a>
+            <a href="{% url 'inicio' %}" class="hover:underline">Inicio</a>
+            <a href="{% url 'lista_empleos' %}" class="hover:underline">Empleos</a>
+            <a href="{% url 'dashboard' %}" class="hover:underline">Dashboard</a>
         </div>
     </nav>
 
     <div class="max-w-4xl mx-auto py-12 px-4">
-
         <div class="bg-white rounded-2xl shadow-lg p-8">
-
             <div class="mb-8">
-                <h2 class="text-4xl font-bold text-gray-800">
-                    Publicar Nuevo Empleo
-                </h2>
-
-                <p class="text-gray-500 mt-2">
-                    Completa la información de la vacante
-                </p>
+                <h2 class="text-4xl font-bold text-gray-800">Publicar Nuevo Empleo</h2>
+                <p class="text-gray-500 mt-2">Completa la información de la vacante</p>
             </div>
 
-            <form class="space-y-6">
+            <!-- SE AGREGÓ: method="POST" -->
+            <form method="POST" class="space-y-6">
+                {% csrf_token %} <!-- SE AGREGÓ: Token de seguridad -->
 
                 <div>
-                    <label class="block text-gray-700 mb-2">
-                        Título del Empleo
-                    </label>
-
+                    <label class="block text-gray-700 mb-2">Título del Empleo</label>
                     <input
                         type="text"
+                        name="titulo" 
                         placeholder="Ej: Desarrollador Frontend"
-                        class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 mb-2">
-                        Empresa
-                    </label>
-
+                    <label class="block text-gray-700 mb-2">Empresa</label>
+                    <!-- Puedes usar un select aquí si quieres vincularlo a tu tabla Empresa de MySQL -->
                     <input
                         type="text"
+                        name="empresa_nombre"
                         placeholder="Nombre de la empresa"
-                        class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
-
                     <div>
-                        <label class="block text-gray-700 mb-2">
-                            Ubicación
-                        </label>
-
+                        <label class="block text-gray-700 mb-2">Ubicación</label>
                         <input
                             type="text"
+                            name="ubicacion"
                             placeholder="San Salvador"
-                            class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                     </div>
 
                     <div>
-                        <label class="block text-gray-700 mb-2">
-                            Tipo de Trabajo
-                        </label>
-
+                        <label class="block text-gray-700 mb-2">Tipo de Trabajo</label>
                         <select
+                            name="tipo_trabajo"
                             class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-                            <option>Tiempo Completo</option>
-                            <option>Medio Tiempo</option>
-                            <option>Remoto</option>
-                            <option>Freelance</option>
-
+                            <option value="tiempo_completo">Tiempo Completo</option>
+                            <option value="medio_tiempo">Medio Tiempo</option>
+                            <option value="remoto">Remoto</option>
+                            <option value="freelance">Freelance</option>
                         </select>
                     </div>
-
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 mb-2">
-                        Salario
-                    </label>
-
+                    <label class="block text-gray-700 mb-2">Salario</label>
                     <input
                         type="text"
+                        name="salario"
                         placeholder="$800 - $1200"
                         class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 mb-2">
-                        Descripción del Empleo
-                    </label>
-
+                    <label class="block text-gray-700 mb-2">Descripción del Empleo</label>
                     <textarea
+                        name="descripcion"
                         rows="6"
-                        placeholder="Describe las responsabilidades y requisitos..."
-                        class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                </div>
-
-                <div>
-                    <label class="block text-gray-700 mb-2">
-                        Requisitos
-                    </label>
-
-                    <textarea
-                        rows="4"
-                        placeholder="Ej: Experiencia en React, Trabajo en equipo..."
-                        class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        placeholder="Describe las responsabilidades..."
+                        class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
                 </div>
 
                 <button
@@ -131,12 +96,8 @@
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition duration-300">
                     Publicar Empleo
                 </button>
-
             </form>
-
         </div>
-
     </div>
-
 </body>
 </html>

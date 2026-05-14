@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -15,50 +14,47 @@
     <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-lg">
 
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800">
-                Bienvenido
-            </h1>
-
-            <p class="text-gray-500 mt-2">
-                Inicia sesión para continuar
+            <h1 class="text-4xl font-bold text-gray-800">Bienvenido</h1>
+            <p class="text-gray-500 mt-2">Inicia sesión para continuar</p>
+            
+            <!-- Mostrar error si las credenciales fallan -->
+            {% if error %}
+            <p class="text-red-500 text-sm mt-4 bg-red-50 p-2 rounded-lg border border-red-200">
+                {{ error }}
             </p>
+            {% endif %}
         </div>
 
-        <form class="space-y-5">
+        <!-- SE CORRIGIÓ: Se agregó method="POST" -->
+        <form method="POST" class="space-y-5">
+            {% csrf_token %} <!-- SE AGREGÓ: Token de seguridad obligatorio -->
 
             <div>
-                <label class="block text-gray-700 mb-2">
-                    Correo Electrónico
-                </label>
-
+                <label class="block text-gray-700 mb-2">Correo Electrónico</label>
                 <input
-                    type="email"
+                    type="text"
+                    name="email" 
                     placeholder="correo@example.com"
-                    class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
             </div>
 
             <div>
-                <label class="block text-gray-700 mb-2">
-                    Contraseña
-                </label>
-
+                <label class="block text-gray-700 mb-2">Contraseña</label>
                 <input
                     type="password"
+                    name="password" 
                     placeholder="********"
-                    class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
             </div>
 
             <div class="flex items-center justify-between text-sm">
-
                 <label class="flex items-center gap-2 text-gray-600">
-                    <input type="checkbox">
+                    <input type="checkbox" name="recordarme">
                     Recordarme
                 </label>
-
-                <a href="#" class="text-blue-600 hover:underline">
-                    ¿Olvidaste tu contraseña?
-                </a>
-
+                <a href="#" class="text-blue-600 hover:underline">¿Olvidaste tu contraseña?</a>
             </div>
 
             <button
@@ -66,18 +62,12 @@
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition duration-300">
                 Ingresar
             </button>
-
         </form>
 
         <p class="text-center text-gray-500 mt-6">
             ¿No tienes cuenta?
-
-            <a href="/registro/" class="text-blue-600 font-semibold hover:underline">
-                Regístrate
-            </a>
+            <a href="{% url 'registro' %}" class="text-blue-600 font-semibold hover:underline">Regístrate</a>
         </p>
-
     </div>
-
 </body>
 </html>
