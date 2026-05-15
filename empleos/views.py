@@ -5,6 +5,11 @@ from django.shortcuts import render
 from .models import Vacante
 from .models import Empresa
 from .models import Perfil
+from .models import Categoria
+from .models import Roles
+from django.db import connection
+with connection.cursor() as cursor:
+    cursor.callproc('sp_reporte_vacantes_empresa', [1])
 
 def inicio(request):
     return render(request, 'empleos/inicio.html')
@@ -44,7 +49,7 @@ def empresas(request):
 def login_view(request):
     if request.method == 'POST':
         # 1. Obtenemos los datos. En Django, por defecto se autentica con 'username'.
-        # Si en tu HTML el input dice name="email", cámbialo aquí o en el HTML.
+        
         usuario_o_correo = request.POST.get('email') 
         clave = request.POST.get('password')
         
@@ -73,6 +78,7 @@ def login_view(request):
             
     return render(request, 'empleos/login.html')
 def registro(request):
+    lista_roles = Roles.objects.all()
     if request.method == 'POST':
         nombre_completo = request.POST.get('nombre')
         usuario = request.POST.get('usuario')
@@ -88,17 +94,33 @@ def registro(request):
             first_name=nombre_completo
         )
         
-        # 2. Crear el Perfil (Esto vincula el tipo de usuario)
-        # Nota: Si usas el Trigger que definimos, este paso se puede simplificar
+        # 2. Crear el Perfil 
         Perfil.objects.create(usuario=user, tipo_usuario=tipo)
+        
+        # 3. NUEVO: Crear la instancia de Empresa si el tipo es empresa
+        if tipo == 'empresa':
+            Empresa.objects.create(
+                usuario=user, 
+                nombre_empresa=nombre_completo # O el nombre que gustes por defecto
+                # Puedes agregar más campos por defecto aquí
+            )
         
         return redirect('login')
         
-    return render(request, 'empleos/registro.html')
+    return render(request, 'empleos/registro.html', {
+        'roles': lista_roles
+    })
 
 def dashboard(request):
     return render(request, 'empleos/dashboard.html')
 
 
 def publicar_empleo(request):
-    return render(request, 'empleos/publicar_empleo.html')
+    # Obtenemos todas las categorías guardadas
+    categorias = Categoria.objects.all()
+    
+    return render(request, 'empleos/publicar_empleo.html', {
+        'categorias': categorias
+    })
+
+

@@ -175,3 +175,14 @@ class Perfil(models.Model):
     
     def __str__(self):
         return f"{self.usuario.username} - {self.tipo_usuario}"
+    
+class Roles(models.Model):
+    idrol = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = 'roles'
+
+    # CORRECCIÓN: Debe tener DOBLE guion bajo antes y después
+    def __str__(self):
+        return self.descripcion

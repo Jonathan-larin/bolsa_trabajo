@@ -1,227 +1,106 @@
-<!-- empleos/templates_empleos/dashboard.html -->
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-
+    <title>Dashboard - Bolsa de Trabajo</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
 <body class="bg-gray-100 min-h-screen">
 
     <div class="flex">
-
-        <!-- Sidebar -->
-        <aside class="w-72 bg-blue-800 text-white min-h-screen p-6">
-
+        <aside class="w-72 bg-blue-800 text-white min-h-screen p-6 shadow-xl">
             <div class="mb-10">
-                <h1 class="text-3xl font-bold">
-                    Bolsa Trabajo
-                </h1>
-
-                <p class="text-blue-200 mt-2">
-                    Panel Administrativo
-                </p>
+                <h1 class="text-3xl font-bold">Bolsa Trabajo</h1>
+                <p class="text-blue-200 mt-2 text-sm">Panel de {{ user.perfil.tipo_usuario|capfirst }}</p>
             </div>
 
             <nav class="space-y-4">
-
-                <a href="#"
-                   class="block bg-blue-700 p-3 rounded-xl hover:bg-blue-600 transition">
-                    📊 Dashboard
-                </a>
-
-                <a href="#"
-                   class="block p-3 rounded-xl hover:bg-blue-700 transition">
-                    💼 Empleos
-                </a>
-
-                <a href="#"
-                   class="block p-3 rounded-xl hover:bg-blue-700 transition">
-                    🏢 Empresas
-                </a>
-
-                <a href="#"
-                   class="block p-3 rounded-xl hover:bg-blue-700 transition">
-                    👥 Usuarios
-                </a>
-
-                <a href="#"
-                   class="block p-3 rounded-xl hover:bg-blue-700 transition">
-                    ⚙ Configuración
-                </a>
-
+                <a href="{% url 'dashboard' %}" class="block bg-blue-700 p-3 rounded-xl hover:bg-blue-600 transition">📊 Dashboard</a>
+                <a href="{% url 'lista_empleos' %}" class="block p-3 rounded-xl hover:bg-blue-700 transition">💼 Mis Empleos</a>
+                <a href="#" class="block p-3 rounded-xl hover:bg-blue-700 transition">🏢 Empresas</a>
+                <a href="{% url 'inicio' %}" class="block p-3 rounded-xl hover:bg-blue-700 transition">🏠 Volver al Inicio</a>
+                <hr class="border-blue-700 my-4">
+                <form action="{% url 'logout' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full text-left p-3 rounded-xl hover:bg-red-600 transition text-red-200">🚪 Cerrar Sesión</button>
+                </form>
             </nav>
-
         </aside>
 
-        <!-- Main -->
         <main class="flex-1 p-8">
-
-            <!-- Header -->
             <div class="flex justify-between items-center mb-10">
-
                 <div>
-                    <h2 class="text-4xl font-bold text-gray-800">
-                        Dashboard
-                    </h2>
-
-                    <p class="text-gray-500 mt-2">
-                        Resumen general de la plataforma
-                    </p>
+                    <h2 class="text-4xl font-bold text-gray-800">Hola, {{ user.first_name|default:user.username }}</h2>
+                    <p class="text-gray-500 mt-2">Este es el resumen actual de tu plataforma.</p>
                 </div>
 
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl">
+                <a href="{% url 'publicar_empleo' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg transition duration-300">
                     + Publicar Empleo
-                </button>
-
+                </a>
             </div>
 
-            <!-- Cards -->
             <div class="grid md:grid-cols-4 gap-6 mb-10">
-
-                <div class="bg-white rounded-2xl shadow-lg p-6">
-
-                    <p class="text-gray-500">
-                        Empleos Publicados
-                    </p>
-
-                    <h3 class="text-4xl font-bold text-blue-600 mt-4">
-                        48
-                    </h3>
-
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <p class="text-gray-500 font-medium">Empleos Activos</p>
+                    <h3 class="text-4xl font-bold text-blue-600 mt-4">{{ vacantes.count }}</h3>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-lg p-6">
-
-                    <p class="text-gray-500">
-                        Empresas
-                    </p>
-
-                    <h3 class="text-4xl font-bold text-green-600 mt-4">
-                        16
-                    </h3>
-
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <p class="text-gray-500 font-medium">Empresas</p>
+                    <h3 class="text-4xl font-bold text-green-600 mt-4">16</h3>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-lg p-6">
-
-                    <p class="text-gray-500">
-                        Usuarios
-                    </p>
-
-                    <h3 class="text-4xl font-bold text-purple-600 mt-4">
-                        230
-                    </h3>
-
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <p class="text-gray-500 font-medium">Usuarios Totales</p>
+                    <h3 class="text-4xl font-bold text-purple-600 mt-4">230</h3>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-lg p-6">
-
-                    <p class="text-gray-500">
-                        Aplicaciones
-                    </p>
-
-                    <h3 class="text-4xl font-bold text-orange-600 mt-4">
-                        1,250
-                    </h3>
-
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <p class="text-gray-500 font-medium">Aplicaciones</p>
+                    <h3 class="text-4xl font-bold text-orange-600 mt-4">1,250</h3>
                 </div>
-
             </div>
 
-            <!-- Tabla -->
-            <div class="bg-white rounded-2xl shadow-lg p-6">
-
+            <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
                 <div class="flex justify-between items-center mb-6">
-
-                    <h3 class="text-2xl font-bold text-gray-800">
-                        Últimos Empleos
-                    </h3>
-
-                    <input
-                        type="text"
-                        placeholder="Buscar..."
-                        class="border border-gray-300 rounded-xl p-3">
-
+                    <h3 class="text-2xl font-bold text-gray-800">Últimas Publicaciones</h3>
+                    <div class="relative">
+                        <input type="text" placeholder="Buscar vacante..." class="border border-gray-300 rounded-xl pl-10 pr-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <span class="absolute left-3 top-2.5">🔍</span>
+                    </div>
                 </div>
 
                 <div class="overflow-x-auto">
-
                     <table class="w-full">
-
                         <thead>
-
-                            <tr class="border-b text-left text-gray-600">
-
-                                <th class="py-4">Puesto</th>
-                                <th class="py-4">Empresa</th>
-                                <th class="py-4">Ubicación</th>
-                                <th class="py-4">Estado</th>
-
+                            <tr class="border-b text-left text-gray-400 uppercase text-xs tracking-wider">
+                                <th class="py-4 px-2">Puesto</th>
+                                <th class="py-4 px-2">Ubicación</th>
+                                <th class="py-4 px-2">Salario</th>
+                                <th class="py-4 px-2">Estado</th>
                             </tr>
-
                         </thead>
-
-                        <tbody>
-
-                            <tr class="border-b hover:bg-gray-50">
-
-                                <td class="py-4">
-                                    Frontend Developer
+                        <tbody class="text-gray-700">
+                            {% for vacante in vacantes %}
+                            <tr class="border-b hover:bg-gray-50 transition">
+                                <td class="py-4 px-2 font-medium">{{ vacante.titulo }}</td>
+                                <td class="py-4 px-2">{{ vacante.ubicacion }}</td>
+                                <td class="py-4 px-2 text-gray-500">{{ vacante.salario|default:"No especificado" }}</td>
+                                <td class="py-4 px-2">
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Activo</span>
                                 </td>
-
-                                <td class="py-4">
-                                    Tech Solutions
-                                </td>
-
-                                <td class="py-4">
-                                    Remoto
-                                </td>
-
-                                <td class="py-4">
-                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                                        Activo
-                                    </span>
-                                </td>
-
                             </tr>
-
-                            <tr class="border-b hover:bg-gray-50">
-
-                                <td class="py-4">
-                                    Diseñador UX/UI
-                                </td>
-
-                                <td class="py-4">
-                                    Creative Studio
-                                </td>
-
-                                <td class="py-4">
-                                    San Salvador
-                                </td>
-
-                                <td class="py-4">
-                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
-                                        Pendiente
-                                    </span>
-                                </td>
-
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="py-10 text-center text-gray-400 italic">No hay empleos publicados aún.</td>
                             </tr>
-
+                            {% endfor %}
                         </tbody>
-
                     </table>
-
                 </div>
-
             </div>
-
         </main>
-
     </div>
 
 </body>
